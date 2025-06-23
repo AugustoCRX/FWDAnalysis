@@ -1,6 +1,3 @@
-# FWD.py
-# Responsabilidade: Ler e processar os dados brutos do FWD.
-
 import pandas as pd
 import numpy as np
 import os
@@ -13,6 +10,7 @@ class FWD:
     def __init__(self, path):
         self.path = path
         self.dict = {}
+        #Condicionais normativos para avaliação do ensaio
         self.conditionals = {
             "N10^7": {
                 "D0": 50, "RAIO": 230, "SCI": 15, "BDI": 10, "BCI": 6

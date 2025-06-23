@@ -1,18 +1,15 @@
-# app.py
-# Responsabilidade: Criar a interface de usuário com Streamlit e orquestrar as classes.
-
 import streamlit as st
 from streamlit_folium import st_folium
 from FWD import FWD
 from map_creator import Map
 import os
 
-# --- Configuração da Página e Título ---
+# Configuração da Página e Título
 st.set_page_config(layout="wide")
 st.title("🗺️ Análise de Deflectometria (FWD)")
 st.markdown("Aplicação para visualização interativa dos resultados de ensaios de FWD.")
 
-# --- Função de Carregamento com Cache de Dados ---
+# Função de Carregamento com Cache de Dados
 @st.cache_data
 def carregar_e_processar_dados():
     """
@@ -35,13 +32,13 @@ def carregar_e_processar_dados():
     fwd_analyzer.process()
     return fwd_analyzer
 
-# --- Lógica Principal da Aplicação ---
+# Lógica Principal da Aplicação
 fwd_data = carregar_e_processar_dados()
 
 if fwd_data is None:
     st.stop() # Interrompe a execução se os dados não foram carregados
 
-# --- Controles da Barra Lateral ---
+# Controles da Barra Lateral
 st.sidebar.success("Dados carregados com sucesso!")
 st.sidebar.header("Parâmetros de Análise")
 
@@ -61,22 +58,20 @@ selected_street = st.sidebar.selectbox(
     options=lista_ruas
 )
 
-# --- Lógica de Exibição do Mapa ---
+# Lógica de Exibição do Mapa
 if selected_street != "Selecione uma rua...":
     street_data = fwd_data.dict.get(selected_street)
     
     if street_data:
         # A cada interação nos menus, uma nova instância da classe Map é criada
         map_creator = Map(street_data, analysis_type, traffic_level)
-        # O método .plot() gera o mapa do zero com os filtros corretos
         mapa_gerado = map_creator.plot()
         
-        # Exibe o mapa no Streamlit, impedindo que o mapa dispare re-execuções
         st_folium(
             mapa_gerado, 
             key="folium_map_final", 
             use_container_width=True,
-            returned_objects=[] # Essencial para performance
+            returned_objects=[]
         )
     else:
         st.warning(f"Não foram encontrados dados para a rua '{selected_street}'.")

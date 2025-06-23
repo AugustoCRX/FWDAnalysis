@@ -1,6 +1,3 @@
-# map_creator.py
-# Responsabilidade: Receber dados processados e gerar um objeto de mapa Folium.
-
 import folium
 import pandas as pd
 
@@ -25,7 +22,7 @@ class Map:
             all_longs = pd.concat([df['Longitude'] for df in all_dfs]).mean()
             center_coord = [all_lats, all_longs]
         else:
-            center_coord = [-2.53, -44.30]  # Coordenadas de São Luís, MA, como fallback
+            center_coord = [-2.53, -44.30] 
 
         self.m = folium.Map(location=center_coord, zoom_start=17, tiles="CartoDB positron")
         folium.TileLayer(
